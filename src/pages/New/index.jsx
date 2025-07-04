@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import api from '../../services/api';
@@ -8,10 +8,10 @@ import './styles.css';
 
 export function New(){
     const [thumbnail, setThumbnail] = useState(null);
-    // caminho das imagens na pasta upload do backend
-    const urlThumbnail = 'http://localhost:3335/files';
-    // varivél preview = 'http://localhost:3335/files/imagem.png'
-    const preview = `${urlThumbnail}/${thumbnail}`;
+    
+    const preview = useMemo(() => {
+        return thumbnail ? URL.createObjectURL(thumbnail): null;
+    }, [thumbnail]);
 
     const [company, setCompany] = useState('');
     const [techs, setTechs] = useState('');
