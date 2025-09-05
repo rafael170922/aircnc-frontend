@@ -1,10 +1,27 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useMemo } from 'react'
 import api from '../../services/api';
+import socketio from 'socket.io-client';
 
 export function Dashboard(){
     const [spots, setSpots ] = useState([])
     
+    useEffect( () => {
+        const user_id = localStorage.getItem('user');
+
+        const socket = socketio('http://localhost:3335', {
+            transports: ['websocket'],
+            query: { user_id }    
+        })
+        socket.on('connect', () =>{
+            console.log('Frontend conectado ao socket.io', socket.id);
+        })
+        // socket.on('message', data => {
+        //     // receb mensagem
+        //     console.log(data)
+        // })
+        // socket.emit('message', 'Cambio ...Frontend para Backend!!!')
+    })
 
     useEffect( () => {
         async function loadSpots(){
